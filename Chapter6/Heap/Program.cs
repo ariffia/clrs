@@ -11,14 +11,35 @@ namespace Heap
         static void Main(string[] args)
         {
             Console.WriteLine("Before");
-            int[] array1 = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+            int[] array1 = new int[] { 1000, 9, 800, 7, 60, 5, 4, 4, 3, 2, 1 };
             Print(array1);
+            Console.WriteLine();
 
             Console.WriteLine("After max heapify!");
             BuildMaxHeap(ref array1);
             Print(array1);
+            Console.WriteLine();
+
+            Console.WriteLine("After heapsort!");
+            Heapsort(ref array1);
+            Print(array1);
+            Console.WriteLine();
 
             Console.ReadKey();
+        }
+
+        static void Heapsort(ref int[] A)
+        {
+            int heapSize = A.Length;
+            BuildMaxHeap(ref A);
+            for (int i = A.Length - 1; i >= 1; i--)  // Zero based i.
+            {
+                int temp = A[i];
+                A[i] = A[0];
+                A[0] = temp;
+                heapSize -= 1;
+                MaxHeapify(ref A, 0, heapSize);
+            }
         }
 
         #region Heap
@@ -49,6 +70,28 @@ namespace Heap
                 A[index] = A[largest];
                 A[largest] = temp;
                 MaxHeapify(ref A, largest);
+            }
+        }
+
+        static void MaxHeapify(ref int[] A, int index, int heapSize)  // Index is zero based.
+        {
+            int largest = index;  // If untouched will terminate the recursion.
+            int l = Left(index);
+            int r = Right(index);
+            if (l < heapSize && A[l] > A[index])
+            {
+                largest = l;
+            }
+            if (r < heapSize && A[r] > A[largest])
+            {
+                largest = r;
+            }
+            if (largest != index)
+            {
+                int temp = A[index];
+                A[index] = A[largest];
+                A[largest] = temp;
+                MaxHeapify(ref A, largest, heapSize);
             }
         }
 
